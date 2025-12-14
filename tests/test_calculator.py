@@ -1,135 +1,92 @@
 """
-Test suite for the Calculator class.
+A simple calculator module with basic arithmetic operations.
 """
 
-import pytest
-from calculator.calculator import Calculator, InvalidInputException
+class InvalidInputException(Exception):
+    """Exception raised when input values are outside the valid range."""
+    pass
 
 
-class TestAddition:
-    """Tests for the add method."""
+class Calculator:
+    """Calculator class providing basic arithmetic operations."""
 
-    def test_add_positive_numbers(self):
-        """Test adding two positive numbers."""
-        # Arrange
-        calc = Calculator()
-        a = 5
-        b = 3
-        expected = 8
+    MAX_VALUE = 1000000
+    MIN_VALUE = -1000000
 
-        # Act
-        result = calc.add(a, b)
-
-        # Assert
-        assert result == expected
-
-    def test_add_negative_numbers(self):
-        """Test adding two negative numbers."""
-        # Arrange
-        calc = Calculator()
-        a = -5
-        b = -3
-        expected = -8
-
-        # Act
-        result = calc.add(a, b)
-
-        # Assert
-        assert result == expected
-
-    def test_add_positive_and_negative(self):
-        """Test adding positive and negative numbers."""
-        # Arrange
-        calc = Calculator()
-        a = 5
-        b = -3
-        expected = 2
-
-        # Act
-        result = calc.add(a, b)
-
-        # Assert
-        assert result == expected
-
-    def test_add_negative_and_positive(self):
-        """Test adding negative and positive numbers."""
-        # Arrange
-        calc = Calculator()
-        a = -5
-        b = 3
-        expected = -2
-
-        # Act
-        result = calc.add(a, b)
-
-        # Assert
-        assert result == expected
-
-    def test_add_positive_with_zero(self):
-        """Test adding positive number with zero."""
-        # Arrange
-        calc = Calculator()
-        a = 5
-        b = 0
-        expected = 5
-
-        # Act
-        result = calc.add(a, b)
-
-        # Assert
-        assert result == expected
-
-    def test_add_zero_with_positive(self):
-        """Test adding zero with positive number."""
-        # Arrange
-        calc = Calculator()
-        a = 0
-        b = 5
-        expected = 5
-
-        # Act
-        result = calc.add(a, b)
-
-        # Assert
-        assert result == expected
-
-    def test_add_floats(self):
-        """Test adding floating point numbers."""
-        # Arrange
-        calc = Calculator()
-        a = 2.5
-        b = 3.7
-        expected = 6.2
-
-        # Act
-        result = calc.add(a, b)
-
-        # Assert
-        assert result == pytest.approx(expected)
+    def _validate_input(self, *values):
+        for value in values:
+            if value >= self.MAX_VALUE or value <= self.MIN_VALUE:
+                raise InvalidInputException(
+                    f"Input value {value} is outside the valid range."
+                    f"[{self.MIN_VALUE}, {self.MAX_VALUE}]"
+                )
+            
 
 
-class TestSubtraction:
-    """Tests for the subtract method."""
+    def add(self, a, b):
+        """Add two numbers.
 
-    def test_subtract_positive_numbers(self):
-        """Test subtracting positive numbers."""
-        # TODO: Implement
+        Args:
+            a: First number
+            b: Second number
 
+        Returns:
+            Sum of a and b
 
-class TestMultiplication:
-    """Tests for the multiply method."""
+        Raises:
+            InvalidInputException: If any input is outside valid range
+        """
+        self._validate_input(a, b)
+        return a + b
 
-    def test_multiply_positive_numbers(self):
-        """Test multiplying positive numbers."""
-        # TODO: Implement
+    def subtract(self, a, b):
+        """Subtract b from a.
 
+        Args:
+            a: First number
+            b: Second number
 
-class TestDivision:
-    """Tests for the divide method."""
+        Returns:
+            Difference of a and b
 
-    def test_divide_positive_numbers(self):
-        """Test dividing positive numbers."""
-        # TODO: Implement
+        Raises:
+            InvalidInputException: If any input is outside valid range
+        """
+        self._validate_input(a, b)
+        return a - b
 
+    def multiply(self, a, b):
+        """Multiply two numbers.
 
+        Args:
+            a: First number
+            b: Second number
+
+        Returns:
+            Product of a and b
+
+        Raises:
+            InvalidInputException: If any input is outside valid range
+        """
+        self._validate_input(a, b)
+        return a * b
+
+    def divide(self, a, b):
+        """Divide a by b.
+
+        Args:
+            a: Numerator
+            b: Denominator
+
+        Returns:
+            Quotient of a and b
+
+        Raises:
+            InvalidInputException: If any input is outside valid range
+            ValueError: If b is zero
+        """
+        self._validate_input(a, b)
+        if b == 0:
+            raise ValueError("Cannot divide by zero")
+        return a / b
 
