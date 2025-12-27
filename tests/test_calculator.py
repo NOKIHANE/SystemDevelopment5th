@@ -5,9 +5,11 @@ Test suite for the Calculator class.
 import pytest
 from calculator.calculator import Calculator, InvalidInputException
 
+
 @pytest.fixture
 def calc():
     return Calculator()
+
 
 class TestAddition:
     """Tests for the add method."""
@@ -18,7 +20,7 @@ class TestAddition:
         calc = Calculator()
         a = 5
         b = 3
-        expected = 8 
+        expected = 8
 
         # Act
         result = calc.add(a, b)
@@ -110,7 +112,6 @@ class TestAddition:
         # Assert
         assert result == expected
 
-
     def test_add_invalid_input(self, calc):
         """Test adding invalid inputs raises InvalidInputException."""
         with pytest.raises(InvalidInputException, match="outside the valid range"):
@@ -121,13 +122,12 @@ class TestAddition:
 
         with pytest.raises(InvalidInputException):
             calc.add(1, -1000000)
-        
 
     def test_values_is_allowed_add(self, calc):
         assert calc.add(999999, 0) == 999999
+
     def test_values_is_allowed_add_2(self, calc):
         assert calc.add(0, -999999) == -999999
-        
 
 
 class TestSubtraction:
@@ -180,7 +180,6 @@ class TestMultiplication:
             calc.multiply(1000000, 1)
         with pytest.raises(InvalidInputException):
             calc.multiply(1, 1000000)
-    
 
 
 class TestDivision:
@@ -202,7 +201,7 @@ class TestDivision:
         """Test dividing by zero raises ValueError."""
         with pytest.raises(ValueError, match="Cannot divide by zero"):
             calc.divide(5, 0)
-    
+
     def test_divide_zero(self, calc):
         assert calc.divide(0, 5) == 0
 
@@ -217,4 +216,3 @@ class TestDivision:
             calc.divide(1000000, 1)
         with pytest.raises(InvalidInputException):
             calc.divide(1, 1000000)
-
