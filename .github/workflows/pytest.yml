@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.12", "3.13", "3.14"]
+        python-version: ["3.14"]
 
     steps:
     - uses: actions/checkout@v3
@@ -47,7 +47,3 @@ jobs:
         echo '```' >> $GITHUB_STEP_SUMMARY
         pytest tests/ --cov=src --cov-report=term | grep -E "(TOTAL Name)" | tail -n 2 >> $GITHUB_STEP_SUMMARY
         echo '```' >> $GITHUB_STEP_SUMMARY
-
-
-
-

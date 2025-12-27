@@ -1,0 +1,49 @@
+name: Mutation Tests (mutmut)
+
+on:
+  push:
+    branches: [ main, master, develop]
+  pull_request:
+    branches: [ main, master, develop]
+
+jobs:
+  mutmut:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.14"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install mutmut
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Run mutation testing
+        run: |
+          mutmut run
+
+      - name: Upload mutmut results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mutmut-results
+          path: |
+            mutants/
+            .mutmut-cache/
+
+      - name: Mutation summary
+        if: always()
+        run: |
+            echo "## Mutmut Summary" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            mutmut results >> $GITHUB_STEP_SUMMARY || true
+            echo '```' >> $GITHUB_STEP_SUMMARY
