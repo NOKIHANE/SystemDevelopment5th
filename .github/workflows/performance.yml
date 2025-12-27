@@ -30,7 +30,7 @@ jobs:
       env:
         PYTHONPATH: src
       run: |
-        pytest -q tests/test_benchmark_calculator.py \
+        pytest -q benchmarks/test_benchmark_calculator.py \
         --benchmark-only \
         --benchmark-json benchmark.json
 
