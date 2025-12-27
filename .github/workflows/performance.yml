@@ -32,7 +32,7 @@ jobs:
       run: |
         pytest -q tests/test_benchmark_calculator.py \
         --benchmark-only \
-        -benchmark-json benchmark.json
+        --benchmark-json benchmark.json
 
     - name: Upload benchmark report
       uses: actions/upload-artifact@v4
