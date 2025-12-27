@@ -23,6 +23,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install pytest
         pip install pytest-cov
+        pip install mutmut
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
     - name: Run tests
@@ -47,3 +48,25 @@ jobs:
         echo '```' >> $GITHUB_STEP_SUMMARY
         pytest tests/ --cov=src --cov-report=term | grep -E "(TOTAL Name)" | tail -n 2 >> $GITHUB_STEP_SUMMARY
         echo '```' >> $GITHUB_STEP_SUMMARY
+
+    - name: Run mutation testing
+      run: |
+        mutmut run
+
+    - name: Upload mutmut results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: mutmut-results
+        path: |
+          mutants/
+          .mutmut-cache/
+
+    - name: Mutation summary
+      if: always()
+      run: |
+        echo "## Mutmut Summary" >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
+        mutmut results >> $GITHUB_STEP_SUMMARY || true
+        echo '```' >> $GITHUB_STEP_SUMMARY
+    
